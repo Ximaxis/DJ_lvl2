@@ -1,0 +1,25 @@
+{% for item in basket_items %}
+<tr class="text-center">
+	<td class="product-remove"><a href="{% url 'basket:remove' item.pk %}"><span class="ion-ios-close"></span></a></td>
+
+	<td class="image-prod">
+		<div class="img" style="background-image: url({{ media_url }}{{ item.product.photo }});"></div>
+	</td>
+
+	<td class="product-name">
+		<h3>{{ item.product.title }}</h3>
+		<p>{{ item.product.category.name }}</p>
+	</td>
+
+	<td class="price">{{ item.product.price }}</td>
+
+	<td class="quantity">
+		<div class="input-group mb-3">
+			<input type="number" name="{{ item.pk }}" class="quantity form-control input-number" min="0" max="{{ item.max_count }}" value="{{ item.quantity }}">
+
+		</div>
+	</td>
+
+	<td class="total">{{ item.product_cost }}</td>
+</tr><!-- END TR-->
+{% endfor %}

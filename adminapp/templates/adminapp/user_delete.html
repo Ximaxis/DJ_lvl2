@@ -1,0 +1,25 @@
+{% extends 'adminapp/base.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+<section class="ftco-section ftco-cart">
+	<div class="container">
+   <div class="row no-gutters slider-text justify-content-center">
+   
+    <h3 class="col-md-12 text-center">Уверены, что хотите удалить {{ user_to_delete.username }} {% if user_to_delete.first_name %}
+    ({{ user_to_delete.first_name|title }}
+    {% if user_to_delete.last_name %}
+    {{ user_to_delete.last_name|title }}
+    {% endif %})
+    {% endif %}?</h3>
+    <form action="{% url 'my_admin:user_delete' user_to_delete.pk %}" method="post">
+        {% csrf_token %}
+        <input class="btn btn-danger py-3 px-5" type="submit" value="удалить">
+    </form>
+        <p><a href="{% url 'my_admin:users' %}" class="btn btn btn-success py-3 px-5">отмена</a></p>
+    
+</div>
+</div>
+</section>
+{% endblock content %}

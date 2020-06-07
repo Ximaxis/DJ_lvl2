@@ -1,0 +1,75 @@
+{% extends 'adminapp/base.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+
+
+
+
+<section class="ftco-section ftco-cart">
+	<div class="container"><button class="new_user">
+			<a href={% url 'my_admin:user_create' %}>
+				<h5>+ New users</h5>
+			</a>
+		</button>
+		<div class="row">
+
+			<div class="col-md-12 ftco-animate">
+				<div class="cart-list">
+					<table class="table">
+						<thead class="thead-primary">
+							<tr class="text-center">
+								<th>Del/Edit</th>
+								<th>Avatar</th>
+								<th>Username</th>
+								<th>Age</th>
+								<th>Email</th>
+								<th>Last Logged</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for object in objects %}
+							<tr class="text-center user_record {% if not object.is_active %}not_active{% endif %}">
+								<td class="product-remove">{% if object.is_superuser %}Admin{% else %}User{% endif %} <hr>
+								<a href="{% url 'my_admin:user_delete' object.pk %}"><span class="ion-ios-close"></span></a>/<a href="{% url 'my_admin:user_update' object.pk %}">Edit</a></td>
+
+								<td class="image-prod">
+									<div class="img" style="background-image: url({{ media_url }}{{ object.avatar|default:'users_avatars/person_3.jpg' }});"></div>
+								</td>
+
+								<td class="product-name">
+									<h3>{{ object.username }}</h3>
+									<p>{% if object.first_name %}
+										<b>{{ object.first_name|title }}</b>
+										{% if object.last_name %}
+										{{ object.last_name|title }}
+										{% endif %}
+										{% endif %}</p>
+								</td>
+
+								<td class="price">age:<br>
+									{{ object.age }} лет</td>
+
+								<td class="quantity">
+									email:<br>
+									{{ object.email }}
+								</td>
+
+								<td class="total">logged:<br>
+									{{ object.last_login }}</td>
+							</tr><!-- END TR-->
+							{% endfor %}
+
+
+
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</section>
+{% endblock content %}

@@ -1,0 +1,21 @@
+{% extends 'adminapp/base.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+
+<section class="ftco-section ftco-cart">
+	<div class="container">
+   <div class="row no-gutters slider-text justify-content-center">
+   
+    <h3 class="col-md-12 text-center">Уверены, что хотите удалить product {{ product_to_delete.title }}?</h3>
+    <form action="{% url 'my_admin:product_delete' product_to_delete.slug %}" method="post">
+        {% csrf_token %}
+        <input class="btn btn-danger py-3 px-5" type="submit" value="удалить">
+    </form>
+   
+         	<p><a href="{% url 'my_admin:products' product_to_delete.category.slug %}" class="btn btn btn-success py-3 px-5">отмена</a></p>
+         	</div>
+</div>
+</section>
+{% endblock %}

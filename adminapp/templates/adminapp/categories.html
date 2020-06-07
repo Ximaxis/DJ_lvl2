@@ -1,0 +1,58 @@
+{% extends 'adminapp/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<section class="ftco-section ftco-cart">
+	<div class="container"><button class="new_user">
+			<a href={% url 'my_admin:category_create' %}>
+				<h5>+ New category</h5>
+			</a>
+		</button>
+		<div class="row">
+
+			<div class="col-md-12 ftco-animate">
+				<div class="cart-list">
+					<table class="table">
+						<thead class="thead-primary">
+							<tr class="text-center">
+								<th>Del/Edit</th>
+								<th>Name/Slug</th>
+								<th>Product Category</th>
+								<th> </th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for object in objects %}
+							<tr class="text-center user_record {% if not object.is_active %}not_active{% endif %}">
+								<td class="product-remove">
+								<a href="{% url 'my_admin:category_delete' object.slug %}"><span class="ion-ios-close"></span></a>/
+						
+								<a href="{% url 'my_admin:category_update' object.slug %}">Edit</a></td>
+
+								<td class="image-prod">
+									{{ object.name|title }}
+									<hr>
+									{{ object.slug|title }}
+									
+								</td>
+
+								<td class="product-remove">
+									<a href="{% url 'my_admin:products' object.slug %}">К списку товаров</a>
+								</td>
+
+								<td class="price"></td>
+							</tr>
+							{% endfor %}
+
+
+
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</section>
+{% endblock %}

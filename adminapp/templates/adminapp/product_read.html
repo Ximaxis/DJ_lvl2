@@ -1,0 +1,30 @@
+{% extends 'adminapp/base.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+<section class="ftco-section ftco-cart">
+	<div class="container">
+    
+    <div class="row">
+    			<div class="col-lg-6 mb-5 ftco-animate">
+    				<a href="/static/img/menu-2.jpg" class="image-popup"><img src="/media/{{ object.photo|default:'products_images/default.jpg' }}" class="img-fluid" alt="Colorlib Template"></a>
+    			</div>
+    			<div class="col-lg-6 product-details pl-md-5 ftco-animate">
+    				<h3>{{ object.category.name|title }} / {{ object.title|title }}</h3>
+    				<p class="price"><b>цена</b> <br> <p>{{ object.price }}  руб</p>
+    				<h4>подробная информация</h4>
+    				<p>{{ object.content }}</p>
+						<b>количество</b>
+        <p>{{ object.quantity }}</p>
+							 
+        <b>{% if object.is_active %}в каталоге{% else %}не в каталоге{% endif %}</b>
+        <p><a href="{% url 'my_admin:product_update' object.slug %}" class="btn btn-primary py-3 px-5">редактировать</a></p>
+         	<p><a href="{% url 'my_admin:product_delete' object.slug %}" class="btn btn-primary py-3 px-5">удалить</a></p>
+         	<p><a href="{% url 'my_admin:products' object.category.slug %}" class="btn btn-primary py-3 px-5">назад</a></p>
+          	
+    			</div>
+    		</div>
+    	</div>
+</section>
+{% endblock content %}

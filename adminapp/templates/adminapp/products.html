@@ -1,0 +1,68 @@
+{% extends 'adminapp/base.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+<section class="ftco-section ftco-cart">
+	<div class="container"><button class="new_user">
+			<a href={% url 'my_admin:product_create' category.slug %}>
+				<h5>+ New Product</h5>
+			</a>
+		</button>
+		<div class="row">
+
+			<div class="col-md-12 ftco-animate">
+				<div class="cart-list">
+					<table class="table">
+						<thead class="thead-primary">
+							<tr class="text-center">
+								<th>Del/Edit</th>
+								<th>Photo</th>
+								<th>Title</th>
+								<th>Detals</th>
+								<th>Price/Quantity</th>
+								<th>Created At</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for object in objects %}
+							<tr class="text-center user_record {% if not object.is_active %}not_active{% endif %}">
+								<td class="product-remove">
+								<a href="{% url 'my_admin:product_delete' object.slug %}"><span class="ion-ios-close"></span></a>/<a href="{% url 'my_admin:product_update' object.slug %}">Edit</a></td>
+
+								<td class="image-prod">
+									<div class="img" style="background-image: url({{ media_url }}{{ object.photo|default:'products_images/product-1.jpg' }});"></div>
+								</td>
+
+								<td class="product-name">
+									<h3>{{ object.title|title }}</h3>
+									
+								</td>
+
+								<td class="product-remove">
+								<a href="{% url 'my_admin:product_read' object.slug %}">Перейти к товару</a></td>
+
+								<td class="quantity">
+									<b>цена</b>
+            <p>{{ object.price }} руб</p>
+            <b>количество</b>
+            <p>{{ object.quantity }}</p>
+								</td>
+
+								<td class="total">
+									 {{ object.created_at }}</td>
+							</tr>
+							{% endfor %}
+
+
+
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</section>
+{% endblock %}
