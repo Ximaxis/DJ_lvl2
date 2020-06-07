@@ -22,7 +22,7 @@ def get_hot_product():
 
 
 def get_same_products(hot_product):
-    same_products = Products.objects.filter(category=hot_product.category). \
+    same_products = Products.objects.filter(is_active=True, category=hot_product.category). \
                         exclude(pk=hot_product.pk)[:3]
 
     return same_products
