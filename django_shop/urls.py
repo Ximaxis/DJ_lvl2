@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import re_path, include
+from django.urls import re_path, include, path
 
 
 urlpatterns = [
@@ -24,6 +24,7 @@ urlpatterns = [
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
     re_path(r'^my_admin/', include("adminapp.urls", namespace="my_admin")),
     re_path(r'^basket/', include("basketapp.urls", namespace="basket")),
+    path("", include("social_django.urls", namespace="social")),
     re_path(r"^auth/", include("authnapp.urls", namespace="auth")),
 ]
 
