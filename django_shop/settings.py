@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'basketapp',
     'adminapp',
     "social_django",
+    "ordersapp",
 ]
 
 MIDDLEWARE = [
@@ -180,8 +181,8 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_URL_NAMESPACE = "social"
 
 # You can save settings in file, but not in GIT!
-# SOCIAL_AUTH_VK_OAUTH2_KEY = '7505506'
-# SOCIAL_AUTH_VK_OAUTH2_SECRET = 'xI5dB44g7pnKOWGC2cdh'
+# SOCIAL_AUTH_VK_OAUTH2_KEY = '*'
+# SOCIAL_AUTH_VK_OAUTH2_SECRET = '*'
 
 # Load settings from file
 with open("../venv/vk.json", "r") as f:

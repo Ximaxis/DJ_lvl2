@@ -13,5 +13,5 @@ urlpatterns = [
     re_path(r'^shop/$', shop, name='shop'),
     re_path(r'^shop/category/(?P<slug>[-\w]+)/$', shop, name='category'),
     re_path(r'^shop/category/(?P<slug>[-\w]+)/page/(?P<page>\d+)/$', shop, name='page'),
-    re_path(r'^checkout/$', about, name='checkout'),
+    re_path(r'^checkout/$', checkout, name='checkout'),
 ]

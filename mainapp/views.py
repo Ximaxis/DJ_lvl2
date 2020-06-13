@@ -100,7 +100,7 @@ def shop(request, slug="all", page=1):
             "media_url": settings.MEDIA_URL,
         }
         return render(request, "mainapp/shop-list.html", content)
-    content = {"title": title, "links_menu": links_menu,  'basket': basket}
+    content = {"title": title, "links_menu": links_menu}
     return render(request, 'mainapp/shop.html', content)
 
 
