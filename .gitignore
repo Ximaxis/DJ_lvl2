@@ -1,5 +1,6 @@
 ### Python template
 +Temp/
++tmp/
 
 # C extensions
 *.so

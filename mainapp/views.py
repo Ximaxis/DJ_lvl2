@@ -22,7 +22,7 @@ def get_hot_product():
 
 
 def get_same_products(hot_product):
-    same_products = Products.objects.filter(category=hot_product.category). \
+    same_products = Products.objects.filter(is_active=True, category=hot_product.category). \
                         exclude(pk=hot_product.pk)[:3]
 
     return same_products
@@ -31,10 +31,9 @@ def main(request):
     title = "Главная"
     visit_date = datetime.datetime.now()
     products = Products.objects.all()[:5]
-    basket = get_basket(request.user)
     hot_product = get_hot_product()
     same_products = get_same_products(hot_product)
-    content = {"title": title, "visit_date": visit_date, 'products': products, "basket": basket,
+    content = {"title": title, "visit_date": visit_date, 'products': products,
                "same_products": same_products,
                 'hot_product': hot_product}
 
@@ -44,7 +43,6 @@ def main(request):
 def products(request, slug):
     title = "Страница товара"
     get_product = get_object_or_404(Products, slug=slug)
-    basket = get_basket(request.user)
     hot_product = get_hot_product()
     same_products = get_same_products(hot_product)
     content = {
@@ -53,7 +51,6 @@ def products(request, slug):
         "media_url": settings.MEDIA_URL,
         "get_product": get_product,
         'hot_product': hot_product,
-        "basket": basket,
     }
     return render(request, 'mainapp/product-single.html', content)
 
@@ -79,7 +76,6 @@ def blog(request):
 def shop(request, slug="all", page=1):
     title = "Каталог товаров"
     links_menu = ProductCategory.objects.filter(is_active=True)
-    basket = get_basket(request.user)
     if slug is not None:
         if slug == "all":
             category = {"slug": "all", "name": "все"}
@@ -102,10 +98,9 @@ def shop(request, slug="all", page=1):
             "category": category,
             "products": products_paginator,
             "media_url": settings.MEDIA_URL,
-            "basket": basket,
         }
         return render(request, "mainapp/shop-list.html", content)
-    content = {"title": title, "links_menu": links_menu,  'basket': basket}
+    content = {"title": title, "links_menu": links_menu}
     return render(request, 'mainapp/shop.html', content)
 
 

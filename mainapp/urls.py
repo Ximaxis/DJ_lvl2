@@ -1,19 +1,17 @@
-from django.urls import path
+from django.urls import re_path
 from .views import *
-from django.conf.urls import url
 
 
 urlpatterns = [
-    path('', main, name='main'),
+    re_path(r'^$', main, name='main'),
 
-    path('shop/<slug:slug>/', products, name='products'),
-    path('contacts', contacts, name='contacts'),
-    path('blog/blogsingle', blogsingle, name='blogsingle'),
-    path('blog', blog, name='blog'),
-    path('about', about, name='about'),
-    path('shop/', shop, name='shop'),
-    path('shop/category/<slug:slug>/', shop, name='category'),
-    path('shop/category/<slug:slug>/page/<int:page>/', shop, name='page'),
-    # path('shop/category/page/<int:page>/', shop, name='page'),
-    path('checkout', about, name='checkout'),
+    re_path(r'^shop/(?P<slug>[-\w]+)/$', products, name='products'),
+    re_path(r'^contacts/$', contacts, name='contacts'),
+    re_path(r'^blog/blogsingle/$', blogsingle, name='blogsingle'),
+    re_path(r'^blog/$', blog, name='blog'),
+    re_path(r'^about$', about, name='about'),
+    re_path(r'^shop/$', shop, name='shop'),
+    re_path(r'^shop/category/(?P<slug>[-\w]+)/$', shop, name='category'),
+    re_path(r'^shop/category/(?P<slug>[-\w]+)/page/(?P<page>\d+)/$', shop, name='page'),
+    re_path(r'^checkout/$', checkout, name='checkout'),
 ]

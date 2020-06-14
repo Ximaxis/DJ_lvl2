@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+<div class="hero-wrap hero-bread" style="background-image: url('/static/img/bg_6.jpg');">
+	<div class="container">
+		<div class="row no-gutters slider-text align-items-center justify-content-center">
+			<div class="col-md-9 ftco-animate text-center">
+				<h1 class="mb-0 bread">Orders , {% if user.first_name %}{{ user.first_name|title }}{% else %}User{% endif %}</h1>
+				<p class="breadcrumbs"><span class="mr-2"><a href="#">Home</a></span> <span>Checkout</span></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<section class="ftco-section ftco-cart">
+	<div class="container"><button class="new_user">
+			<a href="{% url 'ordersapp:order_create' %}" }>
+				<h5>+ New order</h5>
+			</a>
+		</button>
+		<div class="row">
+
+			<div class="col-md-12 ftco-animate">
+				<div class="cart-list">
+					<table class="table">
+						<thead class="thead-primary">
+							<tr class="text-center">
+
+								<th colspan="3">Наименование товара</th>
+								<th>Статус заказа</th>
+
+								<th colspan="2">Действие</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							{% for item in object_list %}
+							<tr class="bg-light">
+								<td colspan="3">Заказ№ <b>{{ item.pk }}</b> <a href="{% url 'ordersapp:order_read' item.pk %}">посмотреть</a><br> Время заказа <b>{{ item.created|date:"Y-m-d H:i:s" }} </b> </td>
+								<td>{{ item.get_status_display }} <br> {% if item.status == 'FM' %}
+									<a href="{% url 'ordersapp:order_update' item.pk %}">редактировать</a>
+									{% endif %}<br> {% if item.status == 'FM' %}
+									<a href="{% url 'ordersapp:order_delete' item.pk %}">удалить</a>
+									{% endif %} </td>
+								<td> <b>Стоимость</b> <br>
+									<p class="text-danger">{{ item.get_total_cost }}руб</p>
+								</td>
+							</tr>
+							{% for item in item.orderitems.select_related %}
+							<tr class="text-center user_record ">
+
+								<td colspan="3">
+									<p>{{ item.product.category.name }}</p>
+									<p class="product_name">{{ item.product.title }}</p>
+								</td>
+
+
+
+								<td>
+									<img src="/media/{{ item.product.photo }}" height="250">
+								</td>
+								<td colspan="2">
+									<p class="product_price">{{ item.product.price }}&nbspруб</p>
+									<p class="product_quantitiy">x {{ item.quantity }} шт.</p>
+									<p class="product_cost"> = {{ item.get_product_cost }}&nbspруб</p>
+								</td>
+
+
+
+
+
+							</tr>
+							{% endfor %}
+							{% endfor %}
+
+
+
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</section>
+{% endblock content %}
