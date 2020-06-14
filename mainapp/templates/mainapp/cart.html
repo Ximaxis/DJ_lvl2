@@ -63,7 +63,9 @@
 								<span>{{ basket_items.0.total_cost|floatformat:0 }} руб</span>
 							</p>
 						</div>
-						<p class="text-center"><a href="{% url 'checkout' %}" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
+						
+						<p class="text-center"><a href="{% url 'ordersapp:order_create'%}" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
+						
 					</div>
 				</div>
 				{% endif %}

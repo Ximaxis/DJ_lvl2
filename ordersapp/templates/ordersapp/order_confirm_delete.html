@@ -1,19 +1,22 @@
-{% extends 'ordersapp/base.html' %}
+{% extends 'base.html' %}
 {% load staticfiles %}
 
 {% block content %}
-<div class="category_delete">
-    <div class="h1">Уверены, что хотите удалить?</div>
+<section class="ftco-section ftco-cart">
+	<div class="container">
+   <div class=" no-gutters slider-text justify-content-center text-center">
+   
+    <h3 class="col-md-12 text-center">Уверены, что хотите удалить?</h3>
 
     {% include 'ordersapp/includes/inc_order_summary.html' %}
-
+	<br>
     <form action="{% url 'ordersapp:order_delete' object.pk %}" method="post">
         {% csrf_token %}
-        <input class="btn btn-danger" type="submit" value="удалить">
+        <input class="btn btn-danger py-3 px-5" type="submit" value="удалить">
     </form>
-    <button class="btn btn-success">
-        <a href="{% url 'ordersapp:orders_list' %}">отмена</a>
-    </button>
+        <p><a href="{% url 'ordersapp:orders_list' %}" class="btn btn btn-success py-3 px-5">отмена</a></p>
 
 </div>
+</div>
+</section>
 {% endblock %}

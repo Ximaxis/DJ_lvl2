@@ -1,6 +1,7 @@
 from basketapp.models import Basket
 
 
+
 def basket(request):
     print("context processor basket works")
     basket = []
