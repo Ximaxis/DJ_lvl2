@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.shortcuts import get_object_or_404
 
 from mainapp.models import Products
 
@@ -14,7 +15,7 @@ class Basket(models.Model):
     def product_cost(self):
         "return cost of all products this type"
         return self.product.price * self.quantity
-
+	
     @property
     def max_count(self):
         "return max quantity of products this type"
@@ -34,3 +35,10 @@ class Basket(models.Model):
         _totalcost = sum(list(map(lambda x: x.product_cost, _items)))
         return _totalcost
 
+    @staticmethod
+    def get_items(user):
+        return Basket.objects.filter(user=user).order_by("product__category")
+
+    @staticmethod
+    def get_item(pk):
+        return get_object_or_404(Basket, pk=pk)

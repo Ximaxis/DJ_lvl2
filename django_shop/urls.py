@@ -16,22 +16,23 @@ Including another URLconf
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path, include
-import mainapp.views as mainapp
+from django.urls import re_path, include, path
 
 
 urlpatterns = [
-    path('', include('mainapp.urls')),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('my_admin/', include("adminapp.urls", namespace="my_admin")),
-    path('basket/', include("basketapp.urls", namespace="basket")),
-    path("auth/", include("authnapp.urls", namespace="auth")),
+    re_path(r'^', include('mainapp.urls')),
+    re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    re_path(r'^my_admin/', include("adminapp.urls", namespace="my_admin")),
+    re_path(r'^basket/', include("basketapp.urls", namespace="basket")),
+    path("", include("social_django.urls", namespace="social")),
+    re_path(r"^order/", include("ordersapp.urls", namespace="order")),
+    re_path(r"^auth/", include("authnapp.urls", namespace="auth")),
 ]
 
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
-                      path('django_admin/', admin.site.urls),
-                      path('__debug__/', include(debug_toolbar.urls)),
+                      re_path(r'^django_admin/', admin.site.urls),
+                      re_path(r'^__debug__/', include(debug_toolbar.urls)),
                   ] + urlpatterns
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

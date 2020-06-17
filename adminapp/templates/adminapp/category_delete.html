@@ -7,7 +7,7 @@
 	<div class="container">
    <div class="row no-gutters slider-text justify-content-center">
    
-    <h3 class="col-md-12 text-center">Уверены, что хотите удалить категорию {{ object.name }}?</h3>
+    <h3 class="col-md-6 text-center">Уверены, что хотите удалить категорию {{ object.name }}?</h3>
     <form action="{% url 'my_admin:category_delete' object.slug %}" method="post">
         {% csrf_token %}
         <input class="btn btn-danger py-3 px-5" type="submit" value="удалить">
