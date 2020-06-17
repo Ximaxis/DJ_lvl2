@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
+{% load staticfiles l10n %}
 
-
+{% block js %}
+{{ block.super }}
+<script src="{% static 'js/jquery.formset.js' %}"></script>
+<script src="{% static 'js/orders_scripts.js' %}"></script>
+{% endblock js %}
 {% block content %}
 <div class="hero-wrap hero-bread" style="background-image: url('/static/img/bg_6.jpg');">
 	<div class="container">
@@ -44,7 +48,13 @@
                     {% endfor %}
                     {% endif %}
                     {{ field.errors.as_ul }}
+                    {% if field.name != 'price' %}
                     {{ field }}
+                    {% else %}
+                    {% if field.value %}
+                    <span class="orderitems-{{ forloop.parentloop.counter0 }}-price">{{ field.value|unlocalize }}</span> RUB
+                    {% endif %}
+                    {% endif %}
                 </td>
 
                 {% endfor %}
