@@ -11,6 +11,18 @@ from basketapp.models import Basket
 from ordersapp.forms import OrderItemForm
 from ordersapp.models import Order, OrderItem
 
+from mainapp.models import Products
+from django.http import JsonResponse
+
+
+def get_product_price(request, pk):
+    if request.is_ajax():
+        product = Products.objects.filter(pk=int(pk)).first()
+        if product:
+            return JsonResponse({"price": product.price})
+        else:
+            return JsonResponse({"price": 0})
+
 
 class OrderList(ListView):
     model = Order

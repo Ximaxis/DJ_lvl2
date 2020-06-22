@@ -37,6 +37,7 @@
 						</thead>
 						<tbody>
 							{% for item in object_list %}
+							{% if item.is_active %}
 							<tr class="bg-light">
 								<td colspan="3">Заказ№ <b>{{ item.pk }}</b> <a href="{% url 'ordersapp:order_read' item.pk %}">посмотреть</a><br> Время заказа <b>{{ item.created|date:"Y-m-d H:i:s" }} </b> </td>
 								<td>{{ item.get_status_display }} <br> {% if item.status == 'FM' %}
@@ -73,6 +74,7 @@
 
 							</tr>
 							{% endfor %}
+							 {% endif %}
 							{% endfor %}
 
 

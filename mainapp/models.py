@@ -44,8 +44,9 @@ class Products(models.Model):
     def __str__(self):
         return f"{self.title} ({self.category.name})"
 
+    @staticmethod
+    def get_items():
+        return Products.objects.filter(is_active=True).order_by("category", "title")
+
     class Meta:
         ordering = ['-created_at']
-
-
-

@@ -12,6 +12,7 @@ defusedxml==0.7.0rc1
 Django==2.2.12
 django-ckeditor==5.9.0
 django-debug-toolbar==2.2
+django-dynamic-formsets==0.0.8
 django-js-asset==1.2.2
 get==2019.4.13
 idna==2.9
@@ -39,5 +40,3 @@ toml==0.10.1
 typed-ast==1.4.1
 urllib3==1.25.9
 wrapt==1.12.1
-black==19.3b0
-pylint==2.3.1
