@@ -12,9 +12,12 @@ defusedxml==0.7.0rc1
 Django==2.2.12
 django-ckeditor==5.9.0
 django-debug-toolbar==2.2
+django-debug-toolbar-template-profiler==2.0.1
 django-dynamic-formsets==0.0.8
+django-extensions==2.2.9
 django-js-asset==1.2.2
 get==2019.4.13
+graphviz==0.14
 idna==2.9
 isort==4.3.21
 lazy-object-proxy==1.4.3
@@ -24,8 +27,10 @@ Pillow==7.1.2
 post==2019.4.13
 public==2019.4.13
 pycparser==2.20
+pydotplus==2.0.2
 PyJWT==1.7.1
 pylint==2.3.1
+pyparsing==2.4.7
 python3-openid==3.1.0
 pytz==2020.1
 query-string==2019.4.13

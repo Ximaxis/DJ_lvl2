@@ -6,16 +6,14 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from .models import Basket
 from mainapp.models import Products
-from mainapp.views import get_basket, get_hot_product, get_same_products
+from mainapp.views import get_hot_product_list
 
 
 @login_required
 def basket(request):
     title = "корзина"
     basket_items = Basket.objects.filter(user=request.user)
-    basket = get_basket(request.user)
-    hot_product = get_hot_product()
-    same_products = get_same_products(hot_product)
+    hot_product, same_products = get_hot_product_list()
     content = {"title": title, "basket_items": basket_items, "media_url": settings.MEDIA_URL,
                "project_settings": settings, "basket": basket,
                "same_products": same_products,
