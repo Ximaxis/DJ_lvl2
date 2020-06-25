@@ -37,9 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'debug_toolbar',
-    'template_profiler_panel',
-    "django_extensions",
     'ckeditor',
     'django.contrib.staticfiles',
     'mainapp',
@@ -48,6 +45,10 @@ INSTALLED_APPS = [
     'adminapp',
     "social_django",
     "ordersapp",
+    'debug_toolbar',
+    'template_profiler_panel',
+    "django_extensions",
+    
 ]
 
 MIDDLEWARE = [
@@ -90,17 +91,17 @@ WSGI_APPLICATION = 'django_shop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-if not DEBUG:
-    DATABASES = {
-        "default": {
-            "NAME": "geekshop",
-            "ENGINE": "django.db.backends.postgresql",
-            "USER": "ximaxis",
-            "PASSWORD": "ximaxis",
-            "HOST": "localhost",
-        }
+
+DATABASES = {
+    "default": {
+        "NAME": "geekshop",
+        "ENGINE": "django.db.backends.postgresql",
+        "USER": "ximaxis",
+        "PASSWORD": "ximaxis",
+        "HOST": "localhost",
     }
-else:
+}
+if DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -111,9 +112,7 @@ else:
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
-if DEBUG:
-    AUTH_PASSWORD_VALIDATORS = []
-else:
+if not DEBUG:
     AUTH_PASSWORD_VALIDATORS = [
         {
             'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -128,6 +127,8 @@ else:
             'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
         },
     ]
+else:
+    AUTH_PASSWORD_VALIDATORS = []
 
 
 # Internationalization

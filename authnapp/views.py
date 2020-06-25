@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib import auth
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.shortcuts import HttpResponseRedirect, render
 from django.urls import reverse
@@ -55,6 +56,7 @@ def register(request):
     return render(request, "authnapp/register.html", content)
 
 
+@login_required
 @transaction.atomic
 def edit(request):
     title = "редактирование"
