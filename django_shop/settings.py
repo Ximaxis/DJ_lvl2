@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+import json
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -25,7 +26,7 @@ SECRET_KEY = 'f%w=sexy)7vj1+r0_x-^gn6!j2m7-!30c@h%0dhbxcw+!zozcc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -36,16 +37,22 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'debug_toolbar',
     'ckeditor',
     'django.contrib.staticfiles',
     'mainapp',
     'authnapp',
     'basketapp',
     'adminapp',
+    "social_django",
+    "ordersapp",
+    'debug_toolbar',
+    'template_profiler_panel',
+    "django_extensions",
+    
 ]
 
 MIDDLEWARE = [
+    # "django.middleware.cache.UpdateCacheMiddleware",  # for entire site caching
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,7 +61,24 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    "social_django.middleware.SocialAuthExceptionMiddleware",
+    # "django.middleware.cache.FetchFromCacheMiddleware",  # for entire site caching
 ]
+
+CACHE_MIDDLEWARE_ALIAS = "default"
+CACHE_MIDDLEWARE_SECONDS = 120
+CACHE_MIDDLEWARE_KEY_PREFIX = "geekbrains"
+
+# Be carefull if you have Windows! Install Memcached before run project!
+#     https://www.ubergizmo.com/how-to/install-memcached-windows/
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.memcached.MemcachedCache",
+        "LOCATION": "127.0.0.1:11211",
+    }
+}
+
+LOW_CACHE = False
 
 ROOT_URLCONF = 'django_shop.urls'
 
@@ -69,6 +93,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "mainapp.context_processors.basket",
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
+                "django.template.context_processors.media",
             ],
         },
     },
@@ -80,19 +108,28 @@ WSGI_APPLICATION = 'django_shop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    "default": {
+        "NAME": "geekshop",
+        "ENGINE": "django.db.backends.postgresql",
+        "USER": "ximaxis",
+        "PASSWORD": "ximaxis",
+        "HOST": "localhost",
     }
 }
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
-if DEBUG:
-    AUTH_PASSWORD_VALIDATORS = []
-else:
+if not DEBUG:
     AUTH_PASSWORD_VALIDATORS = [
         {
             'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -107,6 +144,8 @@ else:
             'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
         },
     ]
+else:
+    AUTH_PASSWORD_VALIDATORS = []
 
 
 # Internationalization
@@ -131,8 +170,13 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# For production use this option and command:
+#     python manage.py collectstatic
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'authnapp.ShopUser'
 
@@ -165,7 +209,70 @@ EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = "tmp/email-messages/"
 
 
-INTERNAL_IPS = ['127.0.0.1']
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "social_core.backends.vk.VKOAuth2",
+)
+
+# SOCIAL_AUTH_AUTHENTICATION_BACKENDS = ("social_core.backends.vk.VKOAuth2",)
+SOCIAL_AUTH_URL_NAMESPACE = "social"
+
+# You can save settings in file, but not in GIT!
+# SOCIAL_AUTH_VK_OAUTH2_KEY = '*'
+# SOCIAL_AUTH_VK_OAUTH2_SECRET = '*'
+
+# Load settings from file
+with open("../venv/vk.json", "r") as f:
+    VK = json.load(f)
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = VK["SOCIAL_AUTH_VK_OAUTH2_APPID"]
+SOCIAL_AUTH_VK_OAUTH2_SECRET = VK["SOCIAL_AUTH_VK_OAUTH2_KEY"]
+
+
+LOGIN_ERROR_URL = "/"
+
+SOCIAL_AUTH_VK_OAUTH2_IGNORE_DEFAULT_SCOPE = True
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ["email"]
+
+SOCIAL_AUTH_PIPELINE = (
+    "social_core.pipeline.social_auth.social_details",
+    "social_core.pipeline.social_auth.social_uid",
+    "social_core.pipeline.social_auth.auth_allowed",
+    "social_core.pipeline.social_auth.social_user",
+    "social_core.pipeline.user.create_user",
+    "authnapp.pipeline.save_user_profile",
+    "social_core.pipeline.social_auth.associate_user",
+    "social_core.pipeline.social_auth.load_extra_data",
+    "social_core.pipeline.user.user_details",
+)
+
+
+# INTERNAL_IPS = ['127.0.0.1']
+
+if DEBUG:
+   def show_toolbar(request):
+       return True
+
+   DEBUG_TOOLBAR_CONFIG = {
+       'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+   }
+
+   DEBUG_TOOLBAR_PANELS = [
+       'debug_toolbar.panels.versions.VersionsPanel',
+       'debug_toolbar.panels.timer.TimerPanel',
+       'debug_toolbar.panels.settings.SettingsPanel',
+       'debug_toolbar.panels.headers.HeadersPanel',
+       'debug_toolbar.panels.request.RequestPanel',
+       'debug_toolbar.panels.sql.SQLPanel',
+       'debug_toolbar.panels.templates.TemplatesPanel',
+       'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+       'debug_toolbar.panels.cache.CachePanel',
+       'debug_toolbar.panels.signals.SignalsPanel',
+       'debug_toolbar.panels.logging.LoggingPanel',
+       'debug_toolbar.panels.redirects.RedirectsPanel',
+       'debug_toolbar.panels.profiling.ProfilingPanel',
+       'template_profiler_panel.panels.template.TemplateProfilerPanel',
+   ]
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 

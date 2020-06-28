@@ -9,6 +9,21 @@
 			<h3 class="v">Modist - Time to get dress</h3>
 			<h3 class="vr">Since - 1985 - {{ visit_date|date:"Y" }}</h3>
 			<div class="col-md-11 ftco-animate text-center">
+				<div style="display: none;">
+    <ul>
+        {% comment %}
+        <li>{{ fact.get_factorial }}</li>
+        <li>{{ fact.get_factorial }}</li>
+        <li>{{ fact.get_factorial }}</li>
+
+        {% with temp_fact=fact.get_factorial %}
+        <li>{{ temp_fact }}</li>
+        <li>{{ temp_fact }}</li>
+        <li>{{ temp_fact }}</li>
+        {% endwith %}
+{% endcomment %}
+    </ul>
+</div>
 
 				<h1>Le Stylist</h1>
 

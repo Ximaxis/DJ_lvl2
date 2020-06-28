@@ -1,8 +1,10 @@
 ### Python template
 +Temp/
++tmp/
 
 # C extensions
 *.so
+*.txt
 
 # Distribution / packaging
 .Python
