@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.db import connection
+from django.db.models import F
 from django.http import JsonResponse
 from django.shortcuts import HttpResponseRedirect, get_object_or_404, render
 from django.template.loader import render_to_string
@@ -30,9 +32,14 @@ def basket_add(request, slug):
 
     if not basket:
         basket = Basket(user=request.user, product=product)
+        basket.quantity += 1
+        basket.save()
 
-    basket.quantity += 1
-    basket.save()
+    else:
+        basket.quantity = F("quantity") + 1
+        basket.save()
+    # update_queries = list(filter(lambda x: "UPDATE" in x["sql"], connection.queries))
+    # print(f"query basket_add: {update_queries}")
 
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
