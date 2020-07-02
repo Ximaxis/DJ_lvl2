@@ -1,7 +1,7 @@
 [
   {
     "model": "authnapp.shopuser",
-    "pk": 1,
+    "pk": 7,
     "fields": {
       "password": "pbkdf2_sha256$150000$nROMUaC9YhAK$gOh81nQPXgLS+mdAp5fJ2wDVAg9etu+ZYtA5TQwl83o=",
       "last_login": null,
